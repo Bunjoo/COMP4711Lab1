@@ -127,46 +127,25 @@ class Game{
     }
 
     function win($token){
-        $result = true;
-
 
         for($row=0; $row < 3 ; $row++){
-            for($col = 0; $col < 3; $col++){
-                if($this->position[3 * $row + $col] != $token)
+            $result = true;
+            for($col=0; $col<3; $col++)
+                if($this->position[3*$row+$col] != $token)
                     $result = false;
-            }
             if($result == true){
                 return $result;
             }
         }
-/*      //code for checking columns
+
+      //code for checking columns
         for($col=0; $col < 3 ; $col++){
-            for($row = 0; $row < 3; $row++){
-                if($this->position[3 * $col + $row] != $token)
+            $result = true;
+            for($row=0; $row<3; $row++)
+                if($this->position[3*$row+$col] != $token)
                     $result = false;
-            }
-            if($result == true){
+            if($result == true)
                 return $result;
-            }
-        }*/
-
-
-        // checking why columns doesnt work
-        if($this->position[0] == $token){
-            echo "HEYYYYAAAA";
-        }
-
-        for($col=0; $col < 3 ; $col++){
-            for($row = 0; $row < 3; $row++){
-                if($this->position[3 * $col + $row] != $token)
-                    $result = false;
-                /*echo "token: $token row : $row col: $col ";
-                var_dump($result);
-                echo "<br/>";*/
-            }
-            if($result == true){
-                return $result;
-            }
         }
 
         if(($this->position[0] == $token) && ($this->position[4] == $token) && ($this->position[8] == $token)) {
