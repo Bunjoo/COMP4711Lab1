@@ -27,6 +27,7 @@
             $squares = $_GET['board'];
 
             $game = new Game($squares);
+            $game->display();
             if ($game->win('x'))
                 echo "You win. Lucky guesses!";
             else if ($game->win('o'))
@@ -34,7 +35,8 @@
             else
                 echo "No winners yet, but you're losing!";
         }else{
-            echo "No board parameter given.";
+            $game = new Game("---------");
+            $game->display();
         }
 
         ?>
@@ -137,11 +139,30 @@ class Game{
                 return $result;
             }
         }
+/*      //code for checking columns
+        for($col=0; $col < 3 ; $col++){
+            for($row = 0; $row < 3; $row++){
+                if($this->position[3 * $col + $row] != $token)
+                    $result = false;
+            }
+            if($result == true){
+                return $result;
+            }
+        }*/
+
+
+        // checking why columns doesnt work
+        if($this->position[0] == $token){
+            echo "HEYYYYAAAA";
+        }
 
         for($col=0; $col < 3 ; $col++){
             for($row = 0; $row < 3; $row++){
                 if($this->position[3 * $col + $row] != $token)
                     $result = false;
+                /*echo "token: $token row : $row col: $col ";
+                var_dump($result);
+                echo "<br/>";*/
             }
             if($result == true){
                 return $result;
@@ -154,9 +175,34 @@ class Game{
         else if(($this->position[2] == $token) && ($this->position[4] == $token) && ($this->position[6] == $token)) {
             $result = true;
         }
-
         return $result;
     }
+
+    function display(){
+        echo "Hello peasant";
+        echo '<table cols="3" style="font-size:large; font-weigh:bold">';
+        echo '<tr>'; // open the first row
+        for ($pos=0; $pos < 9 ; $pos++ ){
+            echo $this->show_cell($pos);
+            if($pos % 3 == 2) echo '</tr><tr>'; // starting new row for next square.
+        }
+        echo '</tr>'; // closing last row
+        echo '</table>';
+    }
+
+    function show_cell($which){
+        $token = $this->position[$which];
+        //deal with the easy case.
+        if($token <> '-') return '<td>'.$token.'</td>';
+        //now hard case.
+        $this->newposition = $this->position; // copying the original
+        $this->newposition[$which] = 'o'; // this would be their move.
+        $move = implode($this->newposition); // make stirng from board array
+        $link = 'http://localhost:63342/Lab1/index.php/?board='.$move; // what the link should be
+        return '<td><a href=" '.$link.' ">-</a></td>';
+
+    }
+
 }
 
 ?>
