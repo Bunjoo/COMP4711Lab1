@@ -8,49 +8,9 @@
     <body>
         <?php
 
-        /*
-
-        $temp = "Jim";
-        echo "Hi, my name is $temp";
-
-        echo "<br/>";
-
-        $temp = "geek";
-        echo "I am a $temp";
-
-        echo '<br/>';
-
-        $name = "Amanda";
-        $what = 'nerd';
-        $level = '50';
-
-        echo 'Hi, my name is ' . $name . ', and I am a level ' . $level . ' ' . $what;
-
-        echo "<br/>";
-
-        $hours = 10;
-        $rate = 12;
-        $total = $hours * $rate ;
-
-        echo "You owe me $total";
-
-        echo "<br/>";
-
-        if($hours > 40){
-            $total = $hours * $rate * 1.5;
-        }else {
-            $total = $hours * $rate;
-        }
-
-        echo ($total > 0) ? 'You owe me ' . $total : "You're welcome";
-
-        echo "<br/>";
-
-        */
-
         // Tic Tac Toe starts here
 
-        if(isset($_GET['board'])){
+        /*if(isset($_GET['board'])){
             $position = $_GET['board'];
             $squares = str_split($position);
 
@@ -61,6 +21,21 @@
         else{
             echo "No board parameter given.";
         }
+            */
+
+        if(isset($_GET['board'])) {
+            $squares = $_GET['board'];
+
+            $game = new Game($squares);
+            if ($game->win('x'))
+                echo "You win. Lucky guesses!";
+            else if ($game->win('o'))
+                echo "I win. Muahahhaahaha";
+            else
+                echo "No winners yet, but you're losing!";
+        }else{
+            echo "No board parameter given.";
+        }
 
         ?>
     </body>
@@ -68,7 +43,7 @@
 
 
 <?php
-
+/*
 function winner($token,$position){
     $won = false;
     if(($position[0] == $token) &&
@@ -139,6 +114,49 @@ function win($token, $position){
     }
 
     return $result;
+}*/
+
+class Game{
+    var $position;
+
+    function __construct($squares)
+    {
+        $this->position = str_split($squares);
+    }
+
+    function win($token){
+        $result = true;
+
+
+        for($row=0; $row < 3 ; $row++){
+            for($col = 0; $col < 3; $col++){
+                if($this->position[3 * $row + $col] != $token)
+                    $result = false;
+            }
+            if($result == true){
+                return $result;
+            }
+        }
+
+        for($col=0; $col < 3 ; $col++){
+            for($row = 0; $row < 3; $row++){
+                if($this->position[3 * $col + $row] != $token)
+                    $result = false;
+            }
+            if($result == true){
+                return $result;
+            }
+        }
+
+        if(($this->position[0] == $token) && ($this->position[4] == $token) && ($this->position[8] == $token)) {
+            $result = true;
+        }
+        else if(($this->position[2] == $token) && ($this->position[4] == $token) && ($this->position[6] == $token)) {
+            $result = true;
+        }
+
+        return $result;
+    }
 }
 
 ?>
